@@ -1,0 +1,28 @@
+{% extends 'layout-9-3.html' %}
+
+{% block title %}Супер блог{% endblock %}
+
+{% block center %}
+<h2 class="title">{{ post.title }}</h2>
+<div class="post-content">
+    {{ post.content|safe }}
+</div>
+<div class="row">
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+    <div class="col-lg-4" style="height: 200px; border: 1px dotted; margin: 0px;"></div>
+</div>
+{% endblock %}
+
+{% block right-side %}
+{% for post in posts %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="title"><a style="color: white;" href="{{ post.url }}">{{ post.title }}</a></h4>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

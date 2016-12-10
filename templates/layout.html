@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css' />
+{% block head %}{% endblock %}
+<style>
+    body {
+       /* font-family: 'Roboto', Arial, Helvetica, sans-serif;*/
+        color: #556270;
+        font-size: 15px;
+        font-weight: 400;
+        background: #556270;
+    }
+    .title{
+        font-family: 'PT Sans Narrow', sans-serif;
+        /*font-family: 'Open Sans Condensed', sans-serif;*/
+        font-weight: bold;
+        color: #7a6a53;
+    }
+    .post-content img {
+        max-width: 100%;
+    }
+    .container-main{
+
+    }
+    .content-center{
+        background: white;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        border-radius: 3px;
+    }
+    .top-menu{
+        margin: 0;
+    }
+    .top-menu a{
+        /*font-family: sans-serif;*/
+        font-weight: bold;
+        font-family: 'PT Sans Narrow', sans-serif;
+        text-transform: uppercase;
+        font-size: 16px;
+        color: #99B2B7;
+        padding: 12px 8px 8px;
+    }
+    .top-menu .active a{
+        color: #ff6b6b;
+    }
+    .top-menu a:hover{
+        text-decoration: none;
+    }
+    #search-element{
+        width: 200px;
+        -webkit-transition: width 0.2s ease-out 0.2s;
+           -moz-transition: width 0.2s ease-out 0.2s;
+             -o-transition: width 0.2s ease-out 0.2s;
+                transition: width 0.2s ease-out 0.2s;
+    }
+    #search-element:hover{
+        width: 500px;
+    }
+</style>
+</head>
+<body>
+<div class="container container-main">{% block content %}{% endblock %}
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
