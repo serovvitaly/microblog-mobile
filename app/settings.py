@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'spider',
     'ckeditor',
     'ckeditor_uploader',
     'blog.apps.BlogConfig',
