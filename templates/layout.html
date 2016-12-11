@@ -10,6 +10,8 @@
 <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css' />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 {% block head %}{% endblock %}
 <style>
     body {
@@ -17,7 +19,7 @@
         color: #556270;
         font-size: 15px;
         font-weight: 400;
-        background: #556270;
+        background: #f0f1f3;
     }
     .title{
         font-family: 'PT Sans Narrow', sans-serif;
@@ -65,10 +67,25 @@
     #search-element:hover{
         width: 500px;
     }
+    .grid-item{
+        width: 292px;
+    }
+    .footer-logo{
+        padding: 5px;
+    }
+    .footer-logo img{
+        margin-right: 5px;
+    }
 </style>
 </head>
 <body>
-<div class="container container-main">{% block content %}{% endblock %}
+<div class="container container-main">
+    {% block content %}{% endblock %}
+    <div class="footer-logo">
+        <img src="http://www.sphinxsearch.com/g/sphinx_silver.gif" height="40" alt="powered by Sphinx">
+        <img src="http://www.southeastlinuxfest.org/wp-content/uploads/2016/04/postgresql-logo.png" height="40" alt="PostgreSql">
+        <img src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png" height="40" alt="Python">
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
