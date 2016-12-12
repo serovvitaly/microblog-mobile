@@ -1,0 +1,20 @@
+{% if item.previous_posts %}
+<div class="small">
+    <strong>Перед прочтением, будет полезно ознакомиться:</strong>
+    <ul>
+        {% for post in item.previous_posts %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if item.following_posts %}
+<div class="small">
+    <strong>После прочтения, будет интересно прочесть:</strong>
+    <ul>
+        {% for post in item.following_posts %}
+        <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

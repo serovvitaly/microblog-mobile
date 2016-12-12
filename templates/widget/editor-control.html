@@ -1,4 +1,7 @@
 <div>
     <a class="small" target="_blank" style="color: red;" href="/admin/blog/post/{{ item.id }}/change/">редактировать</a>
     <a class="small" target="_blank" href="{{ item.source_url }}">источник</a>
+    {% if item.is_active %}
+        <span class="glyphicon glyphicon-eye-open" style="color: green;"></span>
+    {% endif %}
 </div>

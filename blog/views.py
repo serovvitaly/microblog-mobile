@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.views import generic
+from blog.models import Tag
 from blog.models import Post
-from django.http import Http404
+from blog.models import PostGroup
+from django.http import Http404, HttpResponseForbidden
+from django.http import HttpResponse
+import markdown
 
 
 def super_column(iterable_object, parts_number):
@@ -27,10 +31,12 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         is_editor = self.request.user.has_perm('blog.change_post')
+        #posts = PostGroup.objects.get(pk=2).posts
+        posts = Tag.objects.get(pk=1).posts
         if is_editor:
-            posts = Post.objects.all()[0:30]
+            posts = posts.all()
         else:
-            posts = Post.objects.filter(is_active__exact=True).all()[0:30]
+            posts = posts.filter(is_active__exact=True).all()
         return {
             'items': posts,
             #'columns_count': 3,
@@ -43,13 +49,27 @@ class IndexView(generic.TemplateView):
 class PostView(generic.TemplateView):
     template_name = 'post.html'
 
+    def post(self, request, post_id):
+        is_editor = request.user.has_perm('blog.change_post')
+        if is_editor is not True:
+            return HttpResponseForbidden('')
+        post = Post.objects.get(pk=post_id)
+        post.content = request.POST.get('content')
+        post.save()
+        return HttpResponse({
+            'success': True
+        })
+
     def get_context_data(self, **kwargs):
         try:
             post = Post.objects.get(pk=kwargs['post_id'])
         except Post.DoesNotExist:
-            raise Http404("Poll does not exist")
+            raise Http404("Post not found")
+        if self.request.user.has_perm('blog.change_post', post) is False and post.is_active is False:
+            raise Http404("Post not found")
         return {
             'item': post,
+            'post_content': markdown.markdown(post.content),
             'posts': Post.objects.all()[0:10],
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],

@@ -1,0 +1,6 @@
+<p><strong>Статьи по теме:</strong></p>
+{% for series in item.series %}
+    {% for post in series.posts %}
+        {{ post }}<br>
+    {% endfor %}
+{% endfor %}

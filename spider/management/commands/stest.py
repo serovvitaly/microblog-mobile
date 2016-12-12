@@ -8,7 +8,7 @@ from grab.error import GrabTooManyRedirectsError
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        for page_url in PageUrl.objects.filter(id__gte=679).all():
+        for page_url in PageUrl.objects.all():
             cprint(str(page_url.id)+' - '+page_url.url, 'blue')
             try:
                 page_service = WwwSpringOrgUk(page_url.url)

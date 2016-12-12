@@ -1,5 +1,11 @@
+<div class="post-mini">
 <h4 class="title"><a href="{{ item.url }}">{{ item.title }}</a></h4>
+{% if item.image %}
+    <img src="{{ item.image }}" alt="{{ item.title }}">
+{% endif %}
 {% if is_editor %}
 {% include 'widget/editor-control.html' %}
 {% endif %}
 <p class="small">{{ item.annotation }}</p>
+<p>{{ item.tags }}</p>
+</div>

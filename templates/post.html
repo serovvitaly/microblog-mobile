@@ -4,12 +4,46 @@
 
 {% block center %}
 <h2 class="title">{{ item.title }}</h2>
+<hr>
+{% include 'widget/related-posts.html' %}
+<hr>
 {% if is_editor %}
 {% include 'widget/editor-control.html' %}
+    <div>
+    <button class="btn btn-success btn-sm" onclick="savePost();">
+        Сохранить
+    </button>
+    </div>
+<textarea class="post-content" id="post-editor">{{ item.content|safe }}</textarea>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+var simplemde = new SimpleMDE({
+    element: document.getElementById("post-editor")
+});
+function savePost() {
+    $.ajax({
+        'url': '/post/{{ item.id }}/save',
+        'type': 'post',
+        'dataType': 'json',
+        'data': {
+            csrfmiddlewaretoken: 'vpqtrojscFqONZwfbcAT2iwwtYF8PeIVXPM9DmIdtyUnU3WjpAdh0kfLLJt5ALiQ',
+            content: simplemde.value()
+        },
+        'success': function(response){
+            //
+        }
+    })
+}
+</script>
+{% else %}
+<div class="post-content">{{ post_content|safe }}</div>
 {% endif %}
-<div class="post-content">
-    {{ item.content|safe }}
-</div>
+<hr>
+{% include 'widget/related-posts.html' %}
+<hr>
+{% include 'widget/interesting-posts.html' %}
+<hr>
 <div class="row">
 {% for item in sub_posts %}
     <div class="col-lg-4">
