@@ -30,10 +30,15 @@ class MicroBlogPostForm(forms.ModelForm):
 
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['id', 'title', 'has_image', 'is_active', 'length']
+    list_display = ['id', 'title', 'source', 'is_active', 'length']
     list_filter = ['is_active']
     search_fields = ('title',)
     #form = MicroBlogPostForm
+
+    def source(self, rec):
+        source_url = rec.source_url()
+        return '<a href="' + source_url + '">' + source_url + '</a>'
+    source.allow_tags = True
 
     def has_image(self, rec):
         return bool(rec.image())

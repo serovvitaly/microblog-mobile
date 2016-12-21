@@ -7,7 +7,9 @@
 <hr>
 {% include 'widget/related-posts.html' %}
 {% if is_editor %}
+{% with True as is_fast_editor %}
 {% include 'widget/editor-control.html' %}
+{% endwith %}
 {% endif %}
 <div class="post-content">{{ post_content|safe }}</div>
 {% include 'widget/related-posts.html' %}

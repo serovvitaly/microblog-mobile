@@ -1,8 +1,6 @@
 from django.views import generic
-from blog.models import Tag
-from blog.models import Post
-from django.http import Http404, HttpResponseForbidden
-from django.http import HttpResponse, JsonResponse
+from blog.models import Post, Series
+from django.http import Http404, HttpResponseForbidden, HttpResponse, JsonResponse
 import markdown
 
 
@@ -34,9 +32,14 @@ class PostView(generic.TemplateView):
         if is_editor is not True:
             return HttpResponseForbidden('')
         post = Post.objects.get(pk=post_id)
-        post.content = request.POST.get('content')
+        content = request.POST.get('content')
+        if content:
+            post.content = content
+        is_active = request.POST.get('is_active')
+        if is_active:
+            post.is_active = bool(int(is_active))
         post.save()
-        return HttpResponse({
+        return JsonResponse({
             'success': True
         })
 
@@ -53,6 +56,37 @@ class PostView(generic.TemplateView):
             'posts': Post.objects.all()[0:10],
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
+        }
+
+
+class SeriesListView(generic.TemplateView):
+    template_name = 'series.html'
+
+    def get_context_data(self, **kwargs):
+        is_editor = self.request.user.has_perm('blog.change_post')
+        series_list = Series.objects.all()
+        return {
+            'items': series_list,
+            'wrapper_widget': 'widget/multi-column.html',
+            'item_widget': 'widget/post-mini.html',
+            'is_editor': is_editor,
+        }
+
+
+class SeriesView(generic.TemplateView):
+    template_name = 'series.html'
+
+    def get_context_data(self, **kwargs):
+        is_editor = self.request.user.has_perm('blog.change_post')
+        series = Series.objects.get(pk=kwargs['series_id'])
+        posts = series.posts(only_is_active=True)
+        return {
+            'title': series.title,
+            'items': posts,
+            # 'columns_count': 3,
+            'wrapper_widget': 'widget/multi-column.html',
+            'item_widget': 'widget/post-mini.html',
+            'is_editor': is_editor,
         }
 
 

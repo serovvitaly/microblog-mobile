@@ -32,7 +32,14 @@ class Post(models.Model):
         return PostGroup.objects.get(pk=2).posts.filter(is_active__exact=True).all()
 
     def source_url(self):
-        return PageUrl.objects.get(pk=self.meta_data['page_url_id']).url
+        page_url_id = 0
+        if 'page_url_id' in self.meta_data:
+            page_url_id = int(self.meta_data['page_url_id'])
+        if page_url_id > 0:
+            source_url = PageUrl.objects.get(pk=page_url_id).url
+        else:
+            source_url = self.meta_data['source_url']
+        return source_url
 
     def image(self):
         if 'image_url' not in self.meta_data:
@@ -91,10 +98,12 @@ class Series(models.Model):
     def __str__(self):
         return self.title
 
-    def posts(self):
+    def posts(self, only_is_active=False):
         posts_arr = []
         for rel in SeriesPost.objects.filter(series__exact=self).order_by('number').all():
             post = Post.objects.get(pk=rel.post_id)
+            if only_is_active is True and post.is_active is False:
+                continue
             post.post_number = rel.number
             posts_arr.append(post)
         return posts_arr

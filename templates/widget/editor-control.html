@@ -2,9 +2,74 @@
     <div class="btn-group btn-group-xs" role="group" aria-label="...">
         <a class="btn btn-link" target="_blank" href="http://admin.blog.devgang.ru/admin/blog/post/{{ item.id }}/change/">редактировать</a>
         <a class="btn btn-link" target="_blank" href="{{ item.source_url }}">источник</a>
+        {% if is_fast_editor %}
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#post-editor-modal-{{ item.id }}">
+          быстрая правка
+        </button>
+        {% endif %}
     </div>
     {% if item.is_active %}
-        <span class="glyphicon glyphicon-eye-open"></span>
+        <button type="button" class="btn btn-success btn-xs" onclick="setIsActive(false, '{{ item.id }}');">выключить</button>
+    {% else %}
+        <button type="button" class="btn btn-danger btn-xs" onclick="setIsActive(true, '{{ item.id }}');">включить</button>
     {% endif %}
     {{ item.len_without_sp }}/{{ item.len_with_sp }}
 </div>
+<div class="modal fade bs-example-modal-lg" id="post-editor-modal-{{ item.id }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ item.title }}</h4>
+      </div>
+      <div class="modal-body">
+          <textarea class="post-content" id="post-editor">{{ item.content|safe }}</textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+        <button type="button" class="btn btn-primary" onclick="savePost();">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% if is_fast_editor %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+var simplemde = new SimpleMDE({
+    element: document.getElementById("post-editor")
+});
+function savePost() {
+    $.ajax({
+        'url': '/post/{{ item.id }}/save',
+        'type': 'post',
+        'dataType': 'json',
+        'data': {
+            csrfmiddlewaretoken: '{{csrf_token}}',
+            content: simplemde.value()
+        },
+        'success': function(response){
+            //
+        }
+    })
+}
+</script>
+{% endif %}
+<script>
+function setIsActive(isActive, elementItemId) {
+    $.ajax({
+        'url': '/post/'+elementItemId+'/save',
+        'type': 'post',
+        'dataType': 'json',
+        'data': {
+            csrfmiddlewaretoken: '{{csrf_token}}',
+            is_active: 1 * isActive
+        },
+        'success': function(response){
+            if(response.success){
+                $('#post-mini-item-'+elementItemId).remove();
+            }
+        }
+    })
+}
+</script>
