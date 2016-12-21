@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '194.67.201.141',
+    'devgang.ru',
 ]
 
 
@@ -35,8 +36,10 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'spider',
     'ckeditor',
+    'django_comments',
     'ckeditor_uploader',
     'blog.apps.BlogConfig',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,6 +127,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+SITE_ID = 1
 
 
 # Static files (CSS, JavaScript, Images)

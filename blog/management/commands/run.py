@@ -93,6 +93,16 @@ class Command(BaseCommand):
             conn.commit()
 
     def handle(self, *args, **options):
+
+        parts = {}
+
+        for url in range(1, 10):
+            url_parts = url.split('/')
+            print(url_parts[3])
+            if url_parts[3] not in parts:
+                parts['sd'] = 1
+            pass
+
         for page in range(1, 10):
             #time.sleep(1)
             print('Page', page)

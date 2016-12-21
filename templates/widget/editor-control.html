@@ -1,7 +1,10 @@
 <div>
-    <a class="small" target="_blank" style="color: red;" href="/admin/blog/post/{{ item.id }}/change/">редактировать</a>
-    <a class="small" target="_blank" href="{{ item.source_url }}">источник</a>
+    <div class="btn-group btn-group-xs" role="group" aria-label="...">
+        <a class="btn btn-link" target="_blank" href="http://admin.blog.devgang.ru/admin/blog/post/{{ item.id }}/change/">редактировать</a>
+        <a class="btn btn-link" target="_blank" href="{{ item.source_url }}">источник</a>
+    </div>
     {% if item.is_active %}
-        <span class="glyphicon glyphicon-eye-open" style="color: green;"></span>
+        <span class="glyphicon glyphicon-eye-open"></span>
     {% endif %}
+    {{ item.len_without_sp }}/{{ item.len_with_sp }}
 </div>

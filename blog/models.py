@@ -6,21 +6,24 @@ from spider.models import PageUrl
 import markdown
 
 class Post(models.Model):
+    """
+    Модель Поста
+    """
     title = models.CharField(max_length=300)
     content = models.TextField()
     meta_data = JSONField()
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.id) + '. ' + self.title
+        return str(self.id) + '. ' + str(self.title)
 
     def series(self):
-        series_ids = []
+        series_arr = []
         for rel in SeriesPost.objects.filter(post__exact=self).all():
-            series_ids.append(rel.series_id)
-        if len(series_ids) < 1:
-            return None
-        return Series.objects.filter(id__in=series_ids).all()
+            series = Series.objects.get(pk=rel.series_id)
+            series.post_number = rel.number
+            series_arr.append(series)
+        return series_arr
 
     def previous_posts(self):
         return PostGroup.objects.get(pk=2).posts.filter(is_active__exact=True).all()
@@ -43,8 +46,14 @@ class Post(models.Model):
         content_sections = self.content.split('<!--ANNOTATION_SPLITTER-->')
         if len(content_sections) == 1:
             return ''
-        annotation = strip_tags(markdown.markdown(content_sections[0]))
+        annotation = markdown.markdown(content_sections[0])
         return annotation.strip()
+
+    def len_without_sp(self):
+        return len(self.content.replace(' ', ''))
+
+    def len_with_sp(self):
+        return len(str(self.content))
 
 
 class PostLog(models.Model):
@@ -53,6 +62,9 @@ class PostLog(models.Model):
 
 
 class Comment(models.Model):
+    """
+    Модель комментария к Посту
+    """
     post = models.ForeignKey('Post')
     user = models.ForeignKey(User)
     content = models.CharField(max_length=1200)
@@ -71,18 +83,21 @@ class Tag(models.Model):
 
 
 class Series(models.Model):
+    """
+    Модель серии постов
+    """
     title = models.CharField(max_length=100)
 
     def __str__(self):
         return self.title
 
     def posts(self):
-        posts_ids = []
-        for rel in SeriesPost.objects.filter(series__exact=self).all():
-            posts_ids.append(rel.series_id)
-        if len(posts_ids) < 1:
-            return None
-        return Post.objects.filter(id__in=posts_ids).all()
+        posts_arr = []
+        for rel in SeriesPost.objects.filter(series__exact=self).order_by('number').all():
+            post = Post.objects.get(pk=rel.post_id)
+            post.post_number = rel.number
+            posts_arr.append(post)
+        return posts_arr
 
 
 class SeriesPost(models.Model):

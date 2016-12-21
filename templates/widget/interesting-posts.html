@@ -1,6 +1,19 @@
-<p><strong>Статьи по теме:</strong></p>
+{% if item.series %}
+<div class="row">
+    <div class="col-lg-5"><hr></div>
+    <div class="col-lg-2"><h4 class="title text-center">СЕРИИ СТАТЕЙ</h4></div>
+    <div class="col-lg-5"><hr></div>
+</div>
 {% for series in item.series %}
-    {% for post in series.posts %}
-        {{ post }}<br>
-    {% endfor %}
+<h4 style="font-weight: bold;">{{ series.title }}</h4>
+<ul>
+{% for post in series.posts %}
+    {% if post.id == item.id %}
+    <li>{{ post.post_number }}. <strong>{{ post.title }}</strong>{% if is_editor %} ({{ post.len_without_sp }}/{{ post.len_with_sp }}){% endif %}</li>
+    {% else %}
+    <li>{{ post.post_number }}. <a href="{{ post.url }}">{{ post.title }}</a>{% if is_editor %} ({{ post.len_without_sp }}/{{ post.len_with_sp }}){% endif %}</li>
+    {% endif %}
 {% endfor %}
+</ul>
+{% endfor %}
+{% endif %}

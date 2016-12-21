@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^editor/', views.EditorView.as_view()),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^comments/', include('django_comments.urls')),
+    url(r'^metrics/', views.MetricsView.as_view()),
+    url(r'^render/', views.RenderView.as_view()),
 ]

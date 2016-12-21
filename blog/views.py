@@ -1,29 +1,9 @@
-from django.shortcuts import render
 from django.views import generic
 from blog.models import Tag
 from blog.models import Post
-from blog.models import PostGroup
 from django.http import Http404, HttpResponseForbidden
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 import markdown
-
-
-def super_column(iterable_object, parts_number):
-    try:
-        iter(iterable_object)
-    except TypeError:
-        return None
-    output_arr = []
-    part_number = 1
-    for iterable_item in iterable_object:
-        if part_number not in output_arr:
-            output_arr.append([])
-        print(part_number, iterable_item.id)
-        output_arr[part_number-1].append(part_number)
-        part_number += 1
-        if part_number > parts_number:
-            part_number = 1
-    print(output_arr)
 
 
 class IndexView(generic.TemplateView):
@@ -32,11 +12,11 @@ class IndexView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         is_editor = self.request.user.has_perm('blog.change_post')
         #posts = PostGroup.objects.get(pk=2).posts
-        posts = Tag.objects.get(pk=1).posts
-        if is_editor:
-            posts = posts.all()
-        else:
-            posts = posts.filter(is_active__exact=True).all()
+        #posts = Tag.objects.get(pk=1).posts.order_by('id')
+        #if is_editor:
+        #    posts = Post.objects.all()
+        #else:
+        posts = Post.objects.filter(is_active__exact=True).all()
         return {
             'items': posts,
             #'columns_count': 3,
@@ -78,4 +58,18 @@ class PostView(generic.TemplateView):
 
 class EditorView(generic.TemplateView):
     template_name = 'editor/index.html'
+
+
+class MetricsView(generic.View):
+
+    def get(self, request):
+        return HttpResponse('[{"target": "entries","datapoints": [[1.0, 1311836008],[2.0, 1311836009],[3.0, '
+                            '1311836010],[5.0, 1311836011],[6.0, 1311836012]]}]')
+
+
+class RenderView(generic.View):
+
+    def post(self, request):
+        return HttpResponse('[{"target": "entries","datapoints": [[1.0, 1311836008],[2.0, 1311836009],[3.0, '
+                            '1311836010],[5.0, 1311836011],[6.0, 1311836012]]}]')
 

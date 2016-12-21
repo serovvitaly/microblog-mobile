@@ -30,8 +30,9 @@ class MicroBlogPostForm(forms.ModelForm):
 
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['title', 'has_image', 'is_active', 'length']
+    list_display = ['id', 'title', 'has_image', 'is_active', 'length']
     list_filter = ['is_active']
+    search_fields = ('title',)
     #form = MicroBlogPostForm
 
     def has_image(self, rec):
@@ -59,8 +60,18 @@ class SeriesAdmin(admin.ModelAdmin):
 
 class SeriesPostAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['series', 'post', 'number']
+    list_display = ['series', 'post_link', 'number', 'post_is_active']
     list_filter = ['series']
+
+    def post_link(self, rec):
+        post = Post.objects.get(pk=rec.post_id)
+        return '<a href="/admin/blog/post/' + str(post.id) + '/change/">' + post.title + '</a>'
+    post_link.allow_tags = True
+
+    def post_is_active(self, rec):
+        post = Post.objects.get(pk=rec.post_id)
+        return bool(post.is_active)
+    post_is_active.boolean = True
 
 
 admin.site.register(Tag, TagAdmin)
