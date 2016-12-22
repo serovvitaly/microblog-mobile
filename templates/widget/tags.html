@@ -1,0 +1,3 @@
+{% for tag in tags %}
+<a href="{{ RESULT_PAGE }}?tag={{ tag.title }}"><span class="label label-default">{{ tag.title }}</span></a>
+{% endfor %}

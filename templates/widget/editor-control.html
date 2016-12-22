@@ -13,7 +13,15 @@
     {% else %}
         <button type="button" class="btn btn-danger btn-xs" onclick="setIsActive(true, '{{ item.id }}');">включить</button>
     {% endif %}
-    {{ item.len_without_sp }}/{{ item.len_with_sp }}
+    <span class="small">{{ item.len_without_sp }}/{{ item.len_with_sp }}</span>
+    <div>
+    {% for relation in item.translations_posts.all %}
+        <p class="small">
+            <strong>{{ relation.type.title }} для:</strong>
+            <a href="/post/{{ relation.post_from.id }}">{{ relation.post_from.id }}. {{ relation.post_from.title }}</a>
+        </p>
+    {% endfor %}
+    </div>
 </div>
 <div class="modal fade bs-example-modal-lg" id="post-editor-modal-{{ item.id }}" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
@@ -23,6 +31,7 @@
         <h4 class="modal-title">{{ item.title }}</h4>
       </div>
       <div class="modal-body">
+          <p>Разделитель аннотации: &lt;!--ANNOTATION_SPLITTER--&gt;</p>
           <textarea class="post-content" id="post-editor">{{ item.content|safe }}</textarea>
       </div>
       <div class="modal-footer">

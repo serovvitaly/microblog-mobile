@@ -13,6 +13,7 @@ class Post(models.Model):
     content = models.TextField()
     meta_data = JSONField()
     is_active = models.BooleanField(default=False)
+    tags = models.ManyToManyField('Tag')
 
     def __str__(self):
         return str(self.id) + '. ' + str(self.title)
@@ -33,11 +34,12 @@ class Post(models.Model):
 
     def source_url(self):
         page_url_id = 0
+        source_url = ''
         if 'page_url_id' in self.meta_data:
             page_url_id = int(self.meta_data['page_url_id'])
         if page_url_id > 0:
             source_url = PageUrl.objects.get(pk=page_url_id).url
-        else:
+        elif 'source_url' in self.meta_data:
             source_url = self.meta_data['source_url']
         return source_url
 
@@ -61,6 +63,25 @@ class Post(models.Model):
 
     def len_with_sp(self):
         return len(str(self.content))
+
+    def translations_posts(self):
+        return self.postrelation_set
+
+
+class PostRelation(models.Model):
+    post_from = models.ForeignKey('Post', related_name='+')
+    post_to = models.ForeignKey('Post')
+    type = models.ForeignKey('PostRelationType')
+    index_together = [
+        ['post_from', 'type', 'post_to'],
+    ]
+
+
+class PostRelationType(models.Model):
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
 
 
 class PostLog(models.Model):
@@ -86,7 +107,9 @@ class PostGroup(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)
-    posts = models.ManyToManyField(Post, default=[])
+
+    def __str__(self):
+        return self.title
 
 
 class Series(models.Model):
@@ -113,3 +136,7 @@ class SeriesPost(models.Model):
     series = models.ForeignKey(Series)
     post = models.ForeignKey(Post)
     number = models.IntegerField()
+
+
+class Group(models.Model):
+    pass

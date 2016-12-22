@@ -1,5 +1,5 @@
 from django.views import generic
-from blog.models import Post, Series
+from blog.models import Post, Series, Group
 from django.http import Http404, HttpResponseForbidden, HttpResponse, JsonResponse
 import markdown
 
@@ -8,13 +8,18 @@ class IndexView(generic.TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
+        series_id = None
+        try:
+            if 'series' in self.request.GET:
+                series_id = int(self.request.GET['series'])
+        except ValueError:
+            pass
         is_editor = self.request.user.has_perm('blog.change_post')
-        #posts = PostGroup.objects.get(pk=2).posts
-        #posts = Tag.objects.get(pk=1).posts.order_by('id')
-        #if is_editor:
-        #    posts = Post.objects.all()
-        #else:
-        posts = Post.objects.filter(is_active__exact=True).all()
+        if series_id:
+            series = Series.objects.get(pk=series_id)
+            posts = series.posts(only_is_active=True)
+        else:
+            posts = Post.objects.filter(is_active__exact=True).all()
         return {
             'items': posts,
             #'columns_count': 3,
@@ -51,6 +56,7 @@ class PostView(generic.TemplateView):
         if self.request.user.has_perm('blog.change_post', post) is False and post.is_active is False:
             raise Http404("Post not found")
         return {
+            'RESULT_PAGE': '/hello/',
             'item': post,
             'post_content': markdown.markdown(post.content),
             'posts': Post.objects.all()[0:10],
@@ -64,11 +70,14 @@ class SeriesListView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         is_editor = self.request.user.has_perm('blog.change_post')
-        series_list = Series.objects.all()
+        series_list = []
+        for series in Series.objects.all():
+            if series.posts():
+                series_list.append(series)
         return {
             'items': series_list,
             'wrapper_widget': 'widget/multi-column.html',
-            'item_widget': 'widget/post-mini.html',
+            'item_widget': 'widget/series-item.html',
             'is_editor': is_editor,
         }
 
@@ -77,11 +86,34 @@ class SeriesView(generic.TemplateView):
     template_name = 'series.html'
 
     def get_context_data(self, **kwargs):
+        try:
+            series = Series.objects.get(pk=kwargs['series_id'])
+        except Series.DoesNotExist:
+            raise Http404("Series not found")
         is_editor = self.request.user.has_perm('blog.change_post')
-        series = Series.objects.get(pk=kwargs['series_id'])
         posts = series.posts(only_is_active=True)
         return {
             'title': series.title,
+            'items': posts,
+            # 'columns_count': 3,
+            'wrapper_widget': 'widget/multi-column.html',
+            'item_widget': 'widget/series-item.html',
+            'is_editor': is_editor,
+        }
+
+
+class GroupView(generic.TemplateView):
+    template_name = 'series.html'
+
+    def get_context_data(self, **kwargs):
+        try:
+            group = Group.objects.get(pk=kwargs['group_id'])
+        except Series.DoesNotExist:
+            raise Http404("Group not found")
+        is_editor = self.request.user.has_perm('blog.change_post')
+        posts = group.posts(only_is_active=True)
+        return {
+            'title': group.title,
             'items': posts,
             # 'columns_count': 3,
             'wrapper_widget': 'widget/multi-column.html',

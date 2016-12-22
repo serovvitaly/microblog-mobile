@@ -10,11 +10,16 @@
                 <div class="panel-body">
                     <h3 class="media-heading title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
                     <div class="small">{{ item.annotation|safe }}</div>
+                    <p>
+                    {% with item.tags.all as tags %}
+                    {% include 'widget/tags.html' %}
+                    {% endwith %}
+                    </p>
                     {% if item.series %}
                     <div class="small" style="color: gray;">
-                        <strong>Это </strong>
+                        <strong>Это: </strong>
                         {% for series in item.series %}
-                        <span>{{ series.post_number }} статья из серии <a href="/series/{{ series.id }}">{{ series.title }}</a></span>
+                        <mark><span>{{ series.post_number }} статья из серии <a href="/?series={{ series.id }}">{{ series.title }}</a></span></mark>
                         {% endfor %}
                     </div>
                     {% endif %}

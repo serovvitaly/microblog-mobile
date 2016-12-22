@@ -1,9 +1,5 @@
 from django.contrib import admin
-from blog.models import Tag
-from blog.models import Post
-from blog.models import PostGroup
-from blog.models import Series
-from blog.models import SeriesPost
+from blog.models import Tag, Post, PostGroup, Series, SeriesPost, PostRelation, PostRelationType
 from django import forms
 from django.template import engines
 from ckeditor.widgets import CKEditorWidget
@@ -79,8 +75,28 @@ class SeriesPostAdmin(admin.ModelAdmin):
     post_is_active.boolean = True
 
 
+class PostRelationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'post_from_link', 'post_to_link', 'type']
+
+    def post_from_link(sel, rec):
+        post_from = rec.post_from
+        return str(post_from.id) + '. <a href="/admin/blog/post/' + str(post_from.id) + '/change/">' + post_from.title + '</a>'
+    post_from_link.allow_tags = True
+
+    def post_to_link(sel, rec):
+        post_to = rec.post_to
+        return str(post_to.id) + '. <a href="/admin/blog/post/' + str(post_to.id) + '/change/">' + post_to.title + '</a>'
+    post_to_link.allow_tags = True
+
+
+class PostRelationTypeAdmin(admin.ModelAdmin):
+    list_display = ['title']
+
+
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostGroup, PostGroupAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(SeriesPost, SeriesPostAdmin)
+admin.site.register(PostRelation, PostRelationAdmin)
+admin.site.register(PostRelationType, PostRelationTypeAdmin)
