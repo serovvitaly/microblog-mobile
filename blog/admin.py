@@ -26,7 +26,7 @@ class MicroBlogPostForm(forms.ModelForm):
 
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['id', 'title', 'source', 'is_active', 'length']
+    list_display = ['id', 'title', 'tags_list', 'source', 'is_active', 'length']
     list_filter = ['is_active']
     search_fields = ('title',)
     #form = MicroBlogPostForm
@@ -42,6 +42,9 @@ class PostAdmin(admin.ModelAdmin):
 
     def length(self, rec):
         return len(strip_tags(rec.content))
+
+    def tags_list(self, rec):
+        return list(rec.tags.all())
 
 
 class TagAdmin(admin.ModelAdmin):

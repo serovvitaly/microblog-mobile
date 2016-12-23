@@ -107,6 +107,7 @@ class PostGroup(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)
+    color_class = models.CharField(max_length=16, null=True)
 
     def __str__(self):
         return self.title

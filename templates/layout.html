@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="/stile.css">
 <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300italic,700&subset=latin,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&subset=cyrillic,cyrillic-ext" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css' />
@@ -98,6 +98,94 @@
     .panel-footer {
         padding: 5px 10px;
     }
+
+
+    header {
+        background: #f0f0f0;
+        z-index: 9999;
+        color: #18171b;
+        font-family: "Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+        font-size: 14px;
+    }
+    header #header-top {
+        padding-bottom: 20px;
+        padding-top: 32px;
+    }
+    header #header-bottom {
+        background: #f9f9f9;
+        z-index: 999;
+        -moz-transition: box-shadow .8s ease-in-out 0s;
+        -webkit-transition: box-shadow .8s ease-in-out 0s;
+        -webkit-transition-delay: 0s;
+        transition: box-shadow .8s ease-in-out 0s;
+    }
+    header #header-bottom #header-main-menu {
+        -moz-transition: margin-left .3s ease-out 0s;
+        -webkit-transition: margin-left .3s ease-out;
+        -webkit-transition-delay: 0s;
+        transition: margin-left .3s ease-out 0s;
+        -moz-transition: font-size .3s ease-out 0s;
+        -webkit-transition: font-size .3s ease-out;
+        -webkit-transition-delay: 0s;
+        transition: font-size .3s ease-out 0s;
+        float: left;
+        margin: 0;
+        position: relative;
+    }
+    header #header-bottom #header-main-menu>li {
+        float: left;
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 0;
+        overflow: hidden;
+        padding: 0;
+        text-align: center;
+    }
+    header #header-bottom #header-main-menu>li:hover{
+        background-color:rgba(0,0,0,0.04);
+    }
+    header #header-bottom #header-main-menu>li>a {
+        color: #18171b;
+        display: inline-block;
+        padding: 0 10px 0 17px;
+    }
+    header #header-bottom #header-main-menu>li>a:hover{
+        text-decoration:none;
+    }
+
+    .l-header-container .hide-logo .signup_link {
+        margin-right: 0;
+    }
+    .logged-out-header.monochrome .login-button, .logged-out-header.monochrome .signup-button {
+        background-color: #fff;
+        color: #444;
+    }
+    .l-header-container .login-button, .l-header-container .signup-button {
+        max-width: 200px;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: all .25s cubic-bezier(.165,.84,.44,1),opacity 1ms linear;
+    }
+    .logged-out-header .signup_link {
+        height: 32px;
+        text-align: center;
+        vertical-align: top;
+    }
+    .logged-out-header .signup-button {
+        display: inline-block;
+        user-select: none;
+        box-sizing: border-box;
+        cursor: pointer;
+        padding: 6px 13px 4px;
+        border-radius: 2px;
+        font-family: Helvetica Neue,HelveticaNeue,Helvetica,Arial,sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.4;
+        text-decoration: none;
+        border: 1px solid #ffffff;
+    }
+
 </style>
 </head>
 <body>

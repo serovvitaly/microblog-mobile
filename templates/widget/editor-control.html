@@ -14,14 +14,15 @@
         <button type="button" class="btn btn-danger btn-xs" onclick="setIsActive(true, '{{ item.id }}');">включить</button>
     {% endif %}
     <span class="small">{{ item.len_without_sp }}/{{ item.len_with_sp }}</span>
-    <div>
+    <p></p>
+    <ul class="small">
     {% for relation in item.translations_posts.all %}
-        <p class="small">
+        <li>
             <strong>{{ relation.type.title }} для:</strong>
             <a href="/post/{{ relation.post_from.id }}">{{ relation.post_from.id }}. {{ relation.post_from.title }}</a>
-        </p>
+        </li>
     {% endfor %}
-    </div>
+    </ul>
 </div>
 <div class="modal fade bs-example-modal-lg" id="post-editor-modal-{{ item.id }}" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
@@ -36,7 +37,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
-        <button type="button" class="btn btn-primary" onclick="savePost();">Сохранить</button>
+        <button type="button" class="btn btn-primary" onclick="savePost({{ item.id }});">Сохранить</button>
       </div>
     </div>
   </div>
@@ -48,9 +49,9 @@
 var simplemde = new SimpleMDE({
     element: document.getElementById("post-editor")
 });
-function savePost() {
+function savePost(postId) {
     $.ajax({
-        'url': '/post/{{ item.id }}/save',
+        'url': '/post/'+postId+'/save',
         'type': 'post',
         'dataType': 'json',
         'data': {
