@@ -8,22 +8,13 @@
 {% include 'widget/related-posts.html' %}
 {% if is_editor %}
 {% with True as is_fast_editor %}
+<div id="post-item-{{ item.id }}" class="{% if item.is_active %}toggle-0{% else %}toggle-1{% endif %}">
 {% include 'widget/editor-control.html' %}
+</div>
 {% endwith %}
 {% endif %}
 <div class="post-content">{{ post_content|safe }}</div>
 {% include 'widget/related-posts.html' %}
 {% include 'widget/interesting-posts.html' %}
 {% include 'widget/post-comments.html' %}
-{% endblock %}
-
-{% block right-side %}
-{% for post in posts %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h4 class="title"><a style="color: white;" href="{{ post.url }}">{{ post.title }}</a></h4>
-            <p>{{ post.annotation }}</p>
-        </div>
-    </div>
-{% endfor %}
 {% endblock %}

@@ -32,6 +32,22 @@ class IndexView(generic.TemplateView):
 class PostView(generic.TemplateView):
     template_name = 'post.html'
 
+    def dispatch_OLD(self, request, *args, **kwargs):
+        is_editor = request.user.has_perm('blog.change_post')
+        if is_editor is not True:
+            return HttpResponseForbidden('')
+        post_id = int(kwargs['post_id'])
+        post = Post.objects.get(pk=post_id)
+        if post.is_active is True:
+            post.is_active = False
+        else:
+            post.is_active = True
+        post.save()
+        return JsonResponse({
+            'success': True,
+            'is_active': post.is_active
+        })
+
     def post(self, request, post_id):
         is_editor = request.user.has_perm('blog.change_post')
         if is_editor is not True:
@@ -45,7 +61,8 @@ class PostView(generic.TemplateView):
             post.is_active = bool(int(is_active))
         post.save()
         return JsonResponse({
-            'success': True
+            'success': True,
+            'is_active': post.is_active,
         })
 
     def get_context_data(self, **kwargs):
@@ -71,8 +88,8 @@ class SeriesListView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         is_editor = self.request.user.has_perm('blog.change_post')
         series_list = []
-        for series in Series.objects.all():
-            if series.posts():
+        for series in Series.objects.filter(is_active__exact=True).all():
+            if series.posts(only_is_active=True):
                 series_list.append(series)
         return {
             'items': series_list,

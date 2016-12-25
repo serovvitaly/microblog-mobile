@@ -11,14 +11,21 @@
                     <h3 class="media-heading title"><a href="/?series={{ item.id }}">{{ item.title }}</a></h3>
                     <ol>
                     {% for post in item.posts %}
-                        <li>
+                        <li id="series-{{ item.id }}-post-{{ post.id }}" class="{% if post.is_active %}toggle-0{% else %}toggle-1{% endif %}">
                         {% if is_editor %}
                             {{ post.post_number }}.
-                            {% if post.is_active %}
-                            <span class="glyphicon glyphicon-ok" style="color: #00CC00;"></span>
-                            {% else %}
-                            <span class="glyphicon glyphicon-off" style="color: red;"></span>
-                            {% endif %}
+                            <a
+                                class="glyphicon glyphicon-ok toggle-0"
+                                style="color: #00CC00;"
+                                href="#"
+                                onclick="setIsActive(false, '{{ post.id }}', '#series-{{ item.id }}-post-{{ post.id }}'); return false;"
+                            ></a>
+                            <a
+                                class="glyphicon glyphicon-off toggle-1"
+                                style="color: red;"
+                                href="#"
+                                onclick="setIsActive(true, '{{ post.id }}', '#series-{{ item.id }}-post-{{ post.id }}'); return false;"
+                            ></a>
                         {% endif %}
                         {% if post.id == item.id %}
                         <strong>{{ post.title }}</strong>{% if is_editor %} ({{ post.len_without_sp }}/{{ post.len_with_sp }}){% endif %}

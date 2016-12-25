@@ -92,8 +92,9 @@
         border: 1px dashed #dddddd;
     }
     .media img.media-object{
-        border: 2px solid #ebebeb;
-        border-radius: 4px;
+        border: 1px solid #ebebeb;
+        border-radius: 47px;
+        padding: 2px;
     }
     .panel-footer {
         padding: 5px 10px;
@@ -186,17 +187,39 @@
         border: 1px solid #ffffff;
     }
 
+    .toggle-0 .toggle-1{
+        display: none;
+    }
+    .toggle-1 .toggle-0{
+        display: none;
+    }
 </style>
 </head>
 <body>
 <div class="container container-main">
     {% block content %}{% endblock %}
-    <div class="footer-logo">
-        <img src="http://www.sphinxsearch.com/g/sphinx_silver.gif" height="40" alt="powered by Sphinx">
-        <img src="http://www.southeastlinuxfest.org/wp-content/uploads/2016/04/postgresql-logo.png" height="40" alt="PostgreSql">
-        <img src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png" height="40" alt="Python">
-    </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </div>
+<script>
+function setIsActive(isActive, postId, selector) {
+    $.ajax({
+        'url': '/post/'+postId+'/save',
+        'type': 'post',
+        'dataType': 'json',
+        'data': {
+            csrfmiddlewaretoken: '{{csrf_token}}',
+            is_active: 1 * isActive
+        },
+        'success': function(response){
+            console.log(response.is_active);
+            if (response.is_active) {
+                $(selector).removeClass('toggle-1').addClass('toggle-0');
+            } else {
+                $(selector).removeClass('toggle-0').addClass('toggle-1');
+            }
+        }
+    })
+}
+</script>
 </body>
 </html>

@@ -8,15 +8,32 @@
         </button>
         {% endif %}
     </div>
-    {% if item.is_active %}
-        <button type="button" class="btn btn-success btn-xs" onclick="setIsActive(false, '{{ item.id }}');">выключить</button>
-    {% else %}
-        <button type="button" class="btn btn-danger btn-xs" onclick="setIsActive(true, '{{ item.id }}');">включить</button>
-    {% endif %}
+    <a
+        class="btn btn-success btn-xs toggle-0"
+        href="#"
+        onclick="setIsActive(false, '{{ item.id }}', '#post-item-{{ item.id }}'); return false;"
+    >
+        <span class="glyphicon glyphicon-ok"></span>
+        включено
+    </a>
+    <a
+        class="btn btn-danger btn-xs toggle-1"
+        href="#"
+        onclick="setIsActive(true, '{{ item.id }}', '#post-item-{{ item.id }}'); return false;"
+    >
+        <span class="glyphicon glyphicon-off"></span>
+        отключено
+    </a>
     <span class="small">{{ item.len_without_sp }}/{{ item.len_with_sp }}</span>
     <p></p>
     <ul class="small">
     {% for relation in item.translations_posts.all %}
+        <li>
+            <strong>{{ relation.type.title }}:</strong>
+            <a href="/post/{{ relation.post_from.id }}">{{ relation.post_from.id }}. {{ relation.post_from.title }}</a>
+        </li>
+    {% endfor %}
+    {% for relation in item.translation_to_posts.all %}
         <li>
             <strong>{{ relation.type.title }} для:</strong>
             <a href="/post/{{ relation.post_from.id }}">{{ relation.post_from.id }}. {{ relation.post_from.title }}</a>
@@ -65,21 +82,3 @@ function savePost(postId) {
 }
 </script>
 {% endif %}
-<script>
-function setIsActive(isActive, elementItemId) {
-    $.ajax({
-        'url': '/post/'+elementItemId+'/save',
-        'type': 'post',
-        'dataType': 'json',
-        'data': {
-            csrfmiddlewaretoken: '{{csrf_token}}',
-            is_active: 1 * isActive
-        },
-        'success': function(response){
-            if(response.success){
-                $('#post-mini-item-'+elementItemId).remove();
-            }
-        }
-    })
-}
-</script>

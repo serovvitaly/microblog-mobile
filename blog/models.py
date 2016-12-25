@@ -64,13 +64,16 @@ class Post(models.Model):
     def len_with_sp(self):
         return len(str(self.content))
 
+    def translation_to_posts(self):
+        return self.posts_to
+
     def translations_posts(self):
-        return self.postrelation_set
+        return self.posts_from
 
 
 class PostRelation(models.Model):
-    post_from = models.ForeignKey('Post', related_name='+')
-    post_to = models.ForeignKey('Post')
+    post_from = models.ForeignKey('Post', related_name='posts_from')
+    post_to = models.ForeignKey('Post', related_name='posts_to')
     type = models.ForeignKey('PostRelationType')
     index_together = [
         ['post_from', 'type', 'post_to'],
@@ -118,11 +121,12 @@ class Series(models.Model):
     Модель серии постов
     """
     title = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
-    def posts(self, only_is_active=False):
+    def posts(self, only_is_active=True):
         posts_arr = []
         for rel in SeriesPost.objects.filter(series__exact=self).order_by('number').all():
             post = Post.objects.get(pk=rel.post_id)

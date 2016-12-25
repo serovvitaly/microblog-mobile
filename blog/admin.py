@@ -27,7 +27,7 @@ class MicroBlogPostForm(forms.ModelForm):
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_display = ['id', 'title', 'tags_list', 'source', 'is_active', 'length']
-    list_filter = ['is_active']
+    list_filter = ['is_active', 'tags']
     search_fields = ('title',)
     #form = MicroBlogPostForm
 
@@ -59,7 +59,7 @@ class PostGroupAdmin(admin.ModelAdmin):
 
 class SeriesAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['title']
+    list_display = ['title', 'is_active']
 
 
 class SeriesPostAdmin(admin.ModelAdmin):
