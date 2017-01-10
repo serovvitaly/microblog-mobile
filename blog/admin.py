@@ -8,8 +8,19 @@ from django.utils.html import strip_tags
 django_engine = engines['django']
 
 
+def make_published(model_admin, request, queryset):
+    queryset.update(status='p', is_active=True)
+make_published.short_description = "Опубликовать выбранные"
+
+
+def make_unpublished(model_admin, request, queryset):
+    queryset.update(status='w', is_active=False)
+make_unpublished.short_description = "Снять с публикации выбранные"
+
+
 class MicroBlogPostEditorWidget(forms.widgets.Textarea):
     template = 'admin/widget/multi-content-editor.html'
+
     def render(self, name, value, attrs=None):
         return django_engine.get_template(self.template).render()
 
@@ -27,8 +38,9 @@ class MicroBlogPostForm(forms.ModelForm):
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
     list_display = ['id', 'title', 'tags_list', 'source', 'is_active', 'length']
-    list_filter = ['is_active', 'tags']
+    list_filter = ['is_active', 'status', 'tags']
     search_fields = ('title',)
+    actions = [make_published, make_unpublished]
     #form = MicroBlogPostForm
 
     def source(self, rec):

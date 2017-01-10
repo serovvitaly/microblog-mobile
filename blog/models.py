@@ -5,6 +5,14 @@ from django.utils.html import strip_tags
 from spider.models import PageUrl
 import markdown
 
+
+STATUS_CHOICES = (
+    ('d', 'Черновик'),
+    ('p', 'Опубликовано'),
+    ('w', 'Скрыто'),
+)
+
+
 class Post(models.Model):
     """
     Модель Поста
@@ -13,6 +21,7 @@ class Post(models.Model):
     content = models.TextField()
     meta_data = JSONField()
     is_active = models.BooleanField(default=False)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True)
     tags = models.ManyToManyField('Tag')
 
     def __str__(self):
