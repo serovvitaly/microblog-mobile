@@ -1,6 +1,6 @@
 {% extends 'layout-9-3.html' %}
 
-{% block title %}Супер блог{% endblock %}
+{% block title %}{{ item.title }}{% endblock %}
 
 {% block center %}
 <h2 class="title">{{ item.title }}</h2>
@@ -13,8 +13,30 @@
 </div>
 {% endwith %}
 {% endif %}
+{% with 1 as widget_id %}
+{% include 'widget/social-net-line.html' %}
+{% endwith %}
 <div class="post-content">{{ post_content|safe }}</div>
+{% with 2 as widget_id %}
+{% include 'widget/social-net-line.html' %}
+{% endwith %}
 {% include 'widget/related-posts.html' %}
 {% include 'widget/interesting-posts.html' %}
 {% include 'widget/post-comments.html' %}
+{% endblock %}
+
+{% block right-side %}
+{% for post in posts %}
+    {% if post.id != item.id %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h4 class="title"><a href="{{ post.url }}">{{ post.title }}</a></h4>
+            <div class="small" style="color: gray;">
+                <strong>Это: </strong>
+                <mark><span>{{ post.post_number }} статья из серии <a href="/?series=5">Медитация</a></span></mark>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
 {% endblock %}

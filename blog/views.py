@@ -72,11 +72,12 @@ class PostView(generic.TemplateView):
             raise Http404("Post not found")
         if self.request.user.has_perm('blog.change_post', post) is False and post.is_active is False:
             raise Http404("Post not found")
+        series = Series.objects.get(pk=5)
         return {
             'RESULT_PAGE': '/hello/',
             'item': post,
             'post_content': markdown.markdown(post.content),
-            'posts': Post.objects.all()[0:10],
+            'posts': series.posts(only_is_active=True),
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
         }
