@@ -1,19 +1,20 @@
 <div id="post-item-{{ item.id }}" class="col-lg-12 {% if item.is_active %}toggle-0{% else %}toggle-1{% endif %}">
     <div class="media">
         <div class="pull-left">
-            <a href="/group/1001">
+
                 <img
                     alt="64x64"
                     class="media-object"
                     src="http://usin.club/wp-content/uploads/2016/08/man-icon-7.png"
                     style="width: 64px; height: 64px;"
                 >
-            </a>
+
         </div>
         <div class="media-body">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3 class="media-heading title"><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                    <h3 class="media-heading title"><a href="{{ item.url }}?from=list_title">{{ item.title }}</a></h3>
+                    <img alt="{{ item.title }}" src="{{ item.image }}" style="max-width: 400px; margin-bottom: 10px;">
                     <div class="small">{{ item.annotation|safe }}</div>
                     <p>
                     {% with item.tags.all as tags %}

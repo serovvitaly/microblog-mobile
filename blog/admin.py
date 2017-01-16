@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Tag, Post, PostGroup, Series, SeriesPost, PostRelation, PostRelationType
+from blog.models import Tag, Post, PostGroup, Series, SeriesPost, PostRelation, PostRelationType, Ribbon
 from django import forms
 from django.template import engines
 from ckeditor.widgets import CKEditorWidget
@@ -37,8 +37,8 @@ class MicroBlogPostForm(forms.ModelForm):
 
 class PostAdmin(admin.ModelAdmin):
     list_per_page = 20
-    list_display = ['id', 'title', 'tags_list', 'source', 'is_active', 'length']
-    list_filter = ['is_active', 'status', 'tags']
+    list_display = ['id', 'title', 'tags_list', 'ribbon', 'source', 'is_active', 'length']
+    list_filter = ['is_active', 'ribbon', 'status', 'tags']
     search_fields = ('title',)
     actions = [make_published, make_unpublished]
     #form = MicroBlogPostForm
@@ -57,6 +57,11 @@ class PostAdmin(admin.ModelAdmin):
 
     def tags_list(self, rec):
         return list(rec.tags.all())
+
+
+class RibbonAdmin(admin.ModelAdmin):
+    list_per_page = 20
+    list_display = ['title']
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -110,6 +115,7 @@ class PostRelationTypeAdmin(admin.ModelAdmin):
 
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Ribbon, RibbonAdmin)
 admin.site.register(PostGroup, PostGroupAdmin)
 admin.site.register(Series, SeriesAdmin)
 admin.site.register(SeriesPost, SeriesPostAdmin)

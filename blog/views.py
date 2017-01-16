@@ -1,5 +1,5 @@
 from django.views import generic
-from blog.models import Post, Series, Group
+from blog.models import Post, Series, Ribbon
 from django.http import Http404, HttpResponseForbidden, HttpResponse, JsonResponse
 import markdown
 
@@ -72,12 +72,11 @@ class PostView(generic.TemplateView):
             raise Http404("Post not found")
         if self.request.user.has_perm('blog.change_post', post) is False and post.is_active is False:
             raise Http404("Post not found")
-        series = Series.objects.get(pk=5)
         return {
             'RESULT_PAGE': '/hello/',
             'item': post,
             'post_content': markdown.markdown(post.content),
-            'posts': series.posts(only_is_active=True),
+            'posts': Post.objects.filter(is_active__exact=True),
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
         }
@@ -125,7 +124,7 @@ class GroupView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         try:
-            group = Group.objects.get(pk=kwargs['group_id'])
+            group = Ribbon.objects.get(pk=kwargs['group_id'])
         except Series.DoesNotExist:
             raise Http404("Group not found")
         is_editor = self.request.user.has_perm('blog.change_post')

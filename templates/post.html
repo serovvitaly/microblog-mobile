@@ -2,6 +2,13 @@
 
 {% block title %}{{ item.title }}{% endblock %}
 
+{% block og_meta %}
+<meta property="og:title" content="{{ item.title }}" />
+<meta property="og:description" content="{{ item.annotation|striptags }}" />
+<meta property="og:type" content="article" />
+<meta property="og:image" content="{{ item.image }}" />
+{% endblock %}
+
 {% block center %}
 <h2 class="title">{{ item.title }}</h2>
 <hr>
@@ -28,13 +35,14 @@
 {% block right-side %}
 {% for post in posts %}
     {% if post.id != item.id %}
-    <div class="row">
-        <div class="col-lg-12">
-            <h4 class="title"><a href="{{ post.url }}">{{ post.title }}</a></h4>
-            <div class="small" style="color: gray;">
-                <strong>Это: </strong>
-                <mark><span>{{ post.post_number }} статья из серии <a href="/?series=5">Медитация</a></span></mark>
-            </div>
+    <div class="media">
+        <div class="pull-left">
+            <a href="#">
+                <img alt="{{ post.title }}" class="media-object" src="{{ post.image }}" style="width: 100px; border-radius: 6px;">
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading title"><a href="{{ post.url }}?from=post_{{ item.id }}">{{ post.title }}</a></h4>
         </div>
     </div>
     {% endif %}

@@ -23,6 +23,7 @@ class Post(models.Model):
     is_active = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, null=True)
     tags = models.ManyToManyField('Tag')
+    ribbon = models.ForeignKey('Ribbon', null=True, blank=True)
 
     def __str__(self):
         return str(self.id) + '. ' + str(self.title)
@@ -152,5 +153,12 @@ class SeriesPost(models.Model):
     number = models.IntegerField()
 
 
-class Group(models.Model):
-    pass
+class Ribbon(models.Model):
+    """
+    Лента
+    """
+    title = models.CharField(max_length=300)
+    meta_data = JSONField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
