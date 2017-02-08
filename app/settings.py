@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'django_mobile',
     'rest_framework',
     'spider',
     'ckeditor',
@@ -63,20 +64,33 @@ ROOT_URLCONF = 'app.urls'
 
 TEMPLATES_DIR = 'templates' #'templates/material'
 
+#MIDDLEWARE_CLASSES = [
+#    'django_mobile.middleware.MobileDetectionMiddleware',
+#    'django_mobile.middleware.SetFlavourMiddleware',
+#]
+
+TEMPLATE_LOADERS = ''
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             TEMPLATES_DIR,
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
+                'django_mobile.context_processors.flavour',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            #'loaders': ('django_mobile.loader.CachedLoader', (
+            #            'django_mobile.loader.Loader',
+            #            'django.template.loaders.filesystem.Loader',
+            #            'django.template.loaders.app_directories.Loader',
+            #         )),
         },
     },
 ]

@@ -36,7 +36,7 @@ class MicroBlogPostForm(forms.ModelForm):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_per_page = 20
+    list_per_page = 30
     list_display = ['id', 'title', 'tags_list', 'ribbon', 'source', 'is_active', 'length']
     list_filter = ['is_active', 'ribbon', 'status', 'tags']
     search_fields = ('title',)
