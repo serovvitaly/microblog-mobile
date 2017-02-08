@@ -2,6 +2,7 @@ from django.views import generic
 from blog.models import Post, Series, Ribbon
 from django.http import Http404, HttpResponseForbidden, HttpResponse, JsonResponse
 import markdown
+from django.template import loader, Context
 
 
 class IndexView(generic.TemplateView):
@@ -21,8 +22,7 @@ class IndexView(generic.TemplateView):
         else:
             posts = Post.objects.filter(is_active__exact=True).all()
         return {
-            'items': posts,
-            #'columns_count': 3,
+            'items': posts[0:10],
             'wrapper_widget': 'widget/multi-column.html',
             'item_widget': 'widget/post-mini.html',
             'is_editor': is_editor,
@@ -76,10 +76,25 @@ class PostView(generic.TemplateView):
             'RESULT_PAGE': '/hello/',
             'item': post,
             'post_content': markdown.markdown(post.content),
-            'posts': Post.objects.filter(is_active__exact=True),
+            'posts': Post.objects.filter(is_active__exact=True)[0:10],
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
         }
+
+
+class PostsView(generic.View):
+    def get(self, request):
+        template = loader.get_template('widget/multi-column.html')
+        start_post_index = int(request.GET['offset'])
+        end_post_index = start_post_index + int(request.GET['limit'])
+        context = Context({
+            'items': Post.objects.filter(is_active__exact=True).all()[start_post_index:end_post_index],
+            'item_widget': 'widget/post-mini.html',
+        })
+        return JsonResponse({
+            'success': True,
+            'html': template.render(context)
+        })
 
 
 class SeriesListView(generic.TemplateView):

@@ -61,11 +61,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'app.urls'
 
+TEMPLATES_DIR = 'templates' #'templates/material'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            'templates',
+            TEMPLATES_DIR,
         ],
         'APP_DIRS': True,
         'OPTIONS': {

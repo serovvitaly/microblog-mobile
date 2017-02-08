@@ -20,6 +20,7 @@ from blog import views
 urlpatterns = [
     url(r'^$', views.IndexView.as_view()),
     url(r'^post/(?P<post_id>\d+)', views.PostView.as_view()),
+    url(r'^posts/', views.PostsView.as_view()),
     url(r'^group/(?P<group_id>\d+)', views.GroupView.as_view()),
     url(r'^series/(?P<series_id>\d+)', views.SeriesView.as_view()),
     url(r'^series', views.SeriesListView.as_view()),

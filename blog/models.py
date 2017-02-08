@@ -28,6 +28,12 @@ class Post(models.Model):
     def __str__(self):
         return str(self.id) + '. ' + str(self.title)
 
+    def content2(self):
+        return self.content\
+            .replace("\n", '<br><br>')\
+            .replace('<br><br> <br><br>', '<br><br>')\
+            .replace('<br><br><br><br>', '<br><br>')
+
     def series(self):
         series_arr = []
         for rel in SeriesPost.objects.filter(post__exact=self).all():

@@ -34,9 +34,9 @@ class request:
         request = url + '?' + params
         #print(request)
         with urllib.request.urlopen(request) as http_response:
-            #http_response = json.loads(http_response.read().decode("utf-8", "ignore"))
-            print(http_response.read().decode("utf-8", "ignore"))
-            #self.response = response(http_response)
+            http_response = json.loads(http_response.read().decode("utf-8", "ignore"))
+            #print(http_response.read().decode("utf-8", "ignore"))
+            self.response = response(http_response)
 
         return self
 
@@ -81,18 +81,26 @@ class list:
     """
     Класс для Списков
     """
-    count = None
-    items = []
+    #count = None
+    #items = []
 
     def __init__(self, first_request):
         """
         :param first_request: request
         """
+        self.count = None
+        self.items = []
+        self.aggregating_items = True
+        self.callback = None
         self.first_request = first_request
         pass
 
     def set_count(self, count):
         self.count = int(count)
+        return self
+
+    def set_callback(self, callback):
+        self.callback = callback
         return self
 
     def exec(self):
@@ -105,7 +113,8 @@ class list:
         items = first_response['items']
         if len(items) < 1:
             return
-        self.items = self.items + items
+        if self.aggregating_items is True:
+            self.items = self.items + items
         offset = self.first_request.get_param('offset', 0)
         while offset < count:
             offset += 100
@@ -115,7 +124,10 @@ class list:
             items = current_response['items']
             if len(items) < 1:
                 return
-            self.items = self.items + items
+            if self.callback is not None:
+                self.callback(items)
+            if self.aggregating_items is True:
+                self.items = self.items + items
 
     def get_items(self):
         return self.items
