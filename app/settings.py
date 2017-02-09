@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django_mobile',
+    #'django_mobile',
     'rest_framework',
     'spider',
     'ckeditor',
@@ -69,7 +69,7 @@ TEMPLATES_DIR = 'templates' #'templates/material'
 #    'django_mobile.middleware.SetFlavourMiddleware',
 #]
 
-TEMPLATE_LOADERS = ''
+#TEMPLATE_LOADERS = ''
 
 TEMPLATES = [
     {
@@ -77,10 +77,10 @@ TEMPLATES = [
         'DIRS': [
             TEMPLATES_DIR,
         ],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django_mobile.context_processors.flavour',
+                #'django_mobile.context_processors.flavour',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
