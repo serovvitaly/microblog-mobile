@@ -20,16 +20,9 @@
 </div>
 {% endwith %}
 {% endif %}
-{% with 1 as widget_id %}
-{% include 'widget/social-net-line.html' %}
-{% endwith %}
 <div class="post-content">{{ post_content|safe }}</div>
-{% with 2 as widget_id %}
-{% include 'widget/social-net-line.html' %}
-{% endwith %}
 {% include 'widget/related-posts.html' %}
 {% include 'widget/interesting-posts.html' %}
-{% include 'widget/post-comments.html' %}
 {% endblock %}
 
 {% block right-side %}
