@@ -3,6 +3,7 @@ from blog.models import Post, Series, Ribbon
 from django.http import Http404, HttpResponseForbidden, HttpResponse, JsonResponse
 import markdown
 from django.template import loader, Context
+import re
 
 
 class IndexView(generic.TemplateView):
@@ -65,17 +66,28 @@ class PostView(generic.TemplateView):
             'is_active': post.is_active,
         })
 
+    def snippet_post_1_callback(self, matches):
+        post = Post.objects.get(pk=matches.group(1))
+        url = post.url() + '?from=post_inner_' + str(self.post.id)
+        return '<div class="alert alert-info"><strong><a href="'+url+'">'+post.title+'</a></strong></div>'
+
+    def snippet_post_1(self, content):
+        content = re.sub(r"\[post\:(\d+)\]", self.snippet_post_1_callback, content)
+        return content
+
     def get_context_data(self, **kwargs):
         try:
-            post = Post.objects.get(pk=kwargs['post_id'])
+            self.post = Post.objects.get(pk=kwargs['post_id'])
         except Post.DoesNotExist:
             raise Http404("Post not found")
-        if self.request.user.has_perm('blog.change_post', post) is False and post.is_active is False:
+        if self.request.user.has_perm('blog.change_post', self.post) is False and self.post.is_active is False:
             raise Http404("Post not found")
+        post_content = self.post.content
+        post_content = self.snippet_post_1(post_content)
         return {
             'RESULT_PAGE': '/hello/',
-            'item': post,
-            'post_content': markdown.markdown(post.content),
+            'item': self.post,
+            'post_content': markdown.markdown(post_content),
             'posts': Post.objects.filter(is_active__exact=True)[0:10],
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
