@@ -28,6 +28,11 @@ class Post(models.Model):
     def __str__(self):
         return str(self.id) + '. ' + str(self.title)
 
+    def source_base_url(self):
+        from urllib.parse import urlparse
+        parts = urlparse(self.meta_data['source_url'])
+        return parts.netloc
+
     def content2(self):
         return self.content\
             .replace("\n", '<br><br>')\
