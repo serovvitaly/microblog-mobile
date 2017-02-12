@@ -34,9 +34,11 @@
     {% if post.id != item.id %}
     <div class="media">
         <div class="pull-left">
-            <a href="#">
+            {% if post.image %}
+            <a href="{{ post.url }}?from=post_{{ item.id }}">
                 <img alt="{{ post.title }}" class="media-object" src="{{ post.image }}" style="width: 100px; border-radius: 6px;">
             </a>
+            {% endif %}
         </div>
         <div class="media-body">
             <h4 class="media-heading title"><a href="{{ post.url }}?from=post_{{ item.id }}">{{ post.title }}</a></h4>
