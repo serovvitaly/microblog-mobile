@@ -23,7 +23,7 @@ class IndexView(generic.TemplateView):
         else:
             posts = Post.objects.filter(is_active__exact=True).all()
         return {
-            'items': posts[0:10],
+            'items': posts,
             'wrapper_widget': 'widget/multi-column.html',
             'item_widget': 'widget/post-mini.html',
             'is_editor': is_editor,
@@ -88,7 +88,7 @@ class PostView(generic.TemplateView):
             'RESULT_PAGE': '/hello/',
             'item': self.post,
             'post_content': markdown.markdown(post_content),
-            'posts': Post.objects.filter(is_active__exact=True)[0:10],
+            'posts': Post.objects.filter(is_active__exact=True),
             'is_editor': self.request.user.has_perm('blog.change_post'),
             'sub_posts': Post.objects.all()[0:6],
         }
