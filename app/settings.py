@@ -62,7 +62,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'app.urls'
 
-TEMPLATES_DIR = 'templates' #'templates/material'
+TEMPLATES_DIR = 'templates/mobile' #'templates/material'
 
 #MIDDLEWARE_CLASSES = [
 #    'django_mobile.middleware.MobileDetectionMiddleware',
