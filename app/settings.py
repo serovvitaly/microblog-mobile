@@ -34,11 +34,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'spider',
-    'ckeditor',
-    'django_comments',
-    'ckeditor_uploader',
     'blog.apps.BlogConfig',
     'django.contrib.sites',
     'django.contrib.admin',
@@ -61,7 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'app.urls'
 
-TEMPLATES_DIR = 'templates/mobile' #'templates/material'
+TEMPLATES_DIR = 'templates'
 
 TEMPLATES = [
     {
