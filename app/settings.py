@@ -34,11 +34,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'spider',
-    'ckeditor',
-    'django_comments',
-    'ckeditor_uploader',
     'blog.apps.BlogConfig',
     'django.contrib.sites',
     'django.contrib.admin',
