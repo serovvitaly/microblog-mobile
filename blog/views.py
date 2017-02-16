@@ -24,9 +24,6 @@ class IndexView(generic.TemplateView):
             posts = Post.objects.filter(is_active__exact=True).all()
         return {
             'items': posts,
-            'wrapper_widget': 'widget/multi-column.html',
-            'item_widget': 'widget/post-mini.html',
-            'is_editor': is_editor,
         }
 
 
