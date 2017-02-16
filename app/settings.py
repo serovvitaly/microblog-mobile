@@ -61,7 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'app.urls'
 
-TEMPLATES_DIR = 'templates/mobile' #'templates/material'
+TEMPLATES_DIR = 'templates'
 
 TEMPLATES = [
     {
