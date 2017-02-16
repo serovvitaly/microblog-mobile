@@ -208,14 +208,16 @@
                 box-sizing: content-box;
     }
 </style>
-{% include 'metrics.html' %}
 </head>
 <body>
+{% if is_editor is False %}
+{% include 'metrics.html' %}
+{% endif %}
 <div class="container container-main">
     {% block content %}{% endblock %}
-    {% include 'widget/vk-chat.html' %}
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </div>
+{% if is_editor %}
 <script>
 function setIsActive(isActive, postId, selector) {
     $.ajax({
@@ -237,5 +239,6 @@ function setIsActive(isActive, postId, selector) {
     })
 }
 </script>
+{% endif %}
 </body>
 </html>
