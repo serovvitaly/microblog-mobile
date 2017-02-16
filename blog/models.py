@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
-from spider.models import PageUrl
 import markdown
 
 
@@ -59,7 +58,7 @@ class Post(models.Model):
         if 'page_url_id' in self.meta_data:
             page_url_id = int(self.meta_data['page_url_id'])
         if page_url_id > 0:
-            source_url = PageUrl.objects.get(pk=page_url_id).url
+            source_url = ''
         elif 'source_url' in self.meta_data:
             source_url = self.meta_data['source_url']
         return source_url
