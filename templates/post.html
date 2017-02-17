@@ -19,8 +19,12 @@
 <hr>
 <div id="postContent" class="post-content" style="max-height: 700px; overflow: hidden;">
     {{ post_content|safe }}
+    <div>
+        <a href="{{ item.source_url }}" class="btn btn-default btn-xs" target="_blank">Исочник: {{ item.source_base_domain }}</a>
+    </div>
 </div>
 <div id="collapseContainer" style="display: none;">
+    <hr>
     <button type="button" class="btn btn-warning btn-block btn-lg" onclick="doCollapse();">
         <strong>СВЕРНУТЬ</strong>
     </button>
