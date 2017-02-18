@@ -52,7 +52,9 @@ body {
 {% block head %}{% endblock %}
 </head>
 <body>
+{% if debug_mode is False %}
 {% include 'metrics.html' %}
+{% endif %}
 <div class="container container-main">
     {% block content %}{% endblock %}
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
